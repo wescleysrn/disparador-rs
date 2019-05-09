@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>br.com.iamandu.disparador</groupId>
+	<artifactId>disparador</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>war</packaging>
+	<name>disparador</name>
+
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.1.2.RELEASE</version>
+		<relativePath></relativePath>
+	</parent>
+
+	<properties>
+		<java-version>1.8</java-version>
+		<!-- Util -->
+		<commons-io.version>2.6</commons-io.version>
+		<!-- Serviço -->
+		<rest-assured.version>2.4.0</rest-assured.version>
+		<!-- Maven plugins -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<!-- Sonar Properties -->
+		<sonar.host.url>http://sonar.conab.gov.br/</sonar.host.url>
+		<sonar.language>java</sonar.language>
+		<sonar.profile>ConabQualidade</sonar.profile>
+		<sonar.sources>src/main</sonar.sources>
+        <sonar.tests>src/test</sonar.tests>				
+		<!-- Referência das regras de analise estática de código -->
+		<rules.url.start>${sonar.host.url}profiles/export?format=</rules.url.start>
+		<rules.url.end>&amp;language=${sonar.language}&amp;name=${sonar.profile}</rules.url.end>
+		<ruleset.findbugs>${rules.url.start}findbugs${rules.url.end}</ruleset.findbugs>
+		<ruleset.pmd>${rules.url.start}pmd${rules.url.end}</ruleset.pmd>
+		<ruleset.checkstyle>${rules.url.start}checkstyle${rules.url.end}</ruleset.checkstyle>		
+		<!-- Maven Plugin Version - Analise Estática -->
+		<codehaus.mojo.findbugs.maven.plugin.version>3.0.0</codehaus.mojo.findbugs.maven.plugin.version>
+		<maven.pmd.plugin.version>3.4</maven.pmd.plugin.version>
+		<maven.checkstyle.plugin.version>2.15</maven.checkstyle.plugin.version>
+	</properties>
+
+    <dependencies>
+        <!-- Spring Boot -->
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter</artifactId>
+		    <exclusions>
+		        <exclusion>
+		            <groupId>org.springframework.boot</groupId>
+		            <artifactId>spring-boot-starter-logging</artifactId>
+		        </exclusion>
+		    </exclusions>
+            <scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		    <scope>provided</scope>
+		</dependency>		
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <scope>provided</scope>
+        </dependency>
+       	<dependency>
+       		<groupId>org.springframework.boot</groupId>
+       		<artifactId>spring-boot-starter-data-jpa</artifactId>
+            <scope>provided</scope>
+       	</dependency> 
+        <!--/ Spring Boot -->
+		<!-- Oauth -->
+        <dependency>
+    		<groupId>org.springframework.security.oauth.boot</groupId>
+    		<artifactId>spring-security-oauth2-autoconfigure</artifactId>
+    		<version>2.1.2.RELEASE</version>
+    		<scope>provided</scope>
+		</dependency>
+		<!-- 		
+		<dependency>
+			<groupId>org.springframework.security.oauth</groupId>
+			<artifactId>spring-security-oauth2</artifactId>
+            <scope>provided</scope>
+		</dependency>
+		<dependency>
+		    <groupId>org.springframework.security</groupId>
+		    <artifactId>spring-security-jwt</artifactId>
+            <scope>provided</scope>
+		</dependency>
+		-->
+		<!--/ Oauth -->		
+		<!-- Quartz's -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+            <scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz</artifactId>
+            <scope>provided</scope>
+		</dependency>		
+		<dependency>
+        	<groupId>com.mchange</groupId>
+        	<artifactId>c3p0</artifactId>
+        	<version>0.9.5.2</version>
+        	<scope>provided</scope>
+    	</dependency>
+		<!--/ Quartz's -->		
+		<!-- Iamandu Dependência -->
+       	<dependency>
+       		<groupId>br.com.iamandu.barramento.comum</groupId>
+       		<artifactId>comum-barramento</artifactId>
+       		<version>2.0.0</version>
+       	</dependency>
+       	<dependency>
+       		<groupId>br.com.iamandu.barramento.comum</groupId>
+       		<artifactId>comum-recurso</artifactId>
+       		<version>2.0.0</version>
+       	</dependency>
+       	<dependency>
+       		<groupId>br.com.iamandu.barramento.consumidor</groupId>
+       		<artifactId>consumidor-barramento</artifactId>
+       		<version>2.0.0</version>
+       	</dependency>
+		<!--/ Iamandu Dependência -->
+		<!-- Swagger Documentação de API -->
+		<dependency>
+		    <groupId>io.springfox</groupId>
+		    <artifactId>springfox-swagger2</artifactId>
+		    <version>2.7.0</version>
+            <scope>provided</scope>
+		</dependency>		
+		<dependency>
+		    <groupId>io.springfox</groupId>
+		    <artifactId>springfox-swagger-ui</artifactId>
+		    <version>2.7.0</version>
+            <scope>provided</scope>
+		</dependency>
+		<!--/ Swagger Documentação de API -->
+		<!-- Logging -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-log4j2</artifactId>
+            <scope>provided</scope>
+        </dependency>		
+		<dependency>
+		    <groupId>com.fasterxml.jackson.dataformat</groupId>
+		    <artifactId>jackson-dataformat-yaml</artifactId>
+            <scope>provided</scope>
+		</dependency>
+		<dependency>
+		    <groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-databind</artifactId>
+            <scope>provided</scope>
+		</dependency>        
+		<!--/ Logging  -->
+       	<!-- Auxiliares -->
+        <dependency>
+		    <groupId>commons-io</groupId>
+		    <artifactId>commons-io</artifactId>
+		    <version>${commons-io.version}</version>
+            <scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+            <scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+            <scope>provided</scope>
+		</dependency>
+		<dependency>
+		    <groupId>org.aspectj</groupId>
+		    <artifactId>aspectjweaver</artifactId>
+            <scope>provided</scope>
+		</dependency>
+		<dependency>
+		  	<groupId>org.modelmapper</groupId>
+		  	<artifactId>modelmapper</artifactId>
+		  	<version>2.3.2</version>
+            <scope>provided</scope>
+		</dependency>
+       	<!--/ Auxiliares -->
+       	<!-- Test -->
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+		</dependency>
+        <dependency>
+            <groupId>com.jayway.restassured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>${rest-assured.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>commons-logging</artifactId>
+                    <groupId>commons-logging</groupId>
+                </exclusion>
+            </exclusions>
+            <scope>test</scope>
+        </dependency>
+		<!-- Driver de Banco de Dados -->
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+            <scope>test</scope>
+		</dependency>
+		<!--/ Driver de Banco de Dados -->
+       	<!--/ Test -->
+    </dependencies>
+
+	<build>
+		<finalName>disparador</finalName>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+				<excludes>
+					<exclude>*.sql</exclude>
+				</excludes>				
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<encoding>${project.build.sourceEncoding}</encoding>
+					<source>${maven.compiler.source}</source>
+					<target>${maven.compiler.target}</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
+				</configuration>
+			</plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <addResources>true</addResources>
+                </configuration>
+            </plugin>	
+            <!-- 	
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<version>${maven.pmd.plugin.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<linkXRef>false</linkXRef>
+					<targetJdk>${maven.compiler.source}</targetJdk>
+					<failOnViolation>true</failOnViolation>
+					<verbose>true</verbose>
+					<rulesets>
+						<ruleset>${ruleset.pmd}</ruleset> 
+					</rulesets>
+					<excludeRoots>
+						<excludeRoot>target/generated-sources/java</excludeRoot>
+					</excludeRoots>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>findbugs-maven-plugin</artifactId>
+				<version>${codehaus.mojo.findbugs.maven.plugin.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<failOnError>true</failOnError>					
+					<includeFilterFile>${ruleset.findbugs}</includeFilterFile> 
+					<xmlOutput>false</xmlOutput>
+					<fork>false</fork>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>${maven.checkstyle.plugin.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>				
+					<configLocation>${ruleset.checkstyle}</configLocation> 
+					<logViolationsToConsole>true</logViolationsToConsole>
+					<consoleOutput>true</consoleOutput>
+					<violationSeverity>info</violationSeverity>
+					<includeResources>false</includeResources>
+					< ! - - Deprecated - - >
+					<sourceDirectory>${project.compileSourceRoots}</sourceDirectory>
+				</configuration>
+			</plugin>
+			-->					
+		</plugins>
+	</build>
+
+</project>
