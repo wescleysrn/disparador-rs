@@ -5,7 +5,7 @@
 ## Descrição Geral
 
 <p align="justify">O projeto é uma abstração do framework Quart'z que é um serviço de agendamento de tarefas que pode ser integrado, ou utilizado virtualmente, em qualquer aplicação Java SE ou Java EE. A ferramenta pode ser utilizada para criar agendas que executam milhares de tarefas, que são definidas utilizando componentes padrão da plataforma Java, que são codificados para suprir as necessidades da aplicação. O Quartz Scheduler fornece diversos recursos corporativos, como suporte a transações JTA ou clusterização.</p>
-<p align="justify">A ideia desse resource server é se tornar um centralizador de informações e disparo de tarefas agendadas, podendo fornecer estatísticas dos serviços, tomar ações de registro e notificação em caso de falhas das tarefas e possibilitar uma forma de acoplar tarefas no ecosistema de micro serviços corporativos.</p>
+<p align="justify">A ideia desse resource server é se tornar um centralizador de informações e disparo de tarefas agendadas, podendo fornecer estatísticas dos serviços, tomar ações de registro e notificação em caso de falhas das tarefas e possibilitar uma forma de acoplar tarefas no ecossistema de micro serviços corporativos.</p>
 
 ## Modelo de Dados
 
